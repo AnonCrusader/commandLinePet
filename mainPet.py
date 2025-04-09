@@ -1,18 +1,14 @@
-import os
-import platform
-import threading
-import time
-import random
+import os,platform,threading,time,random
 
-#--Basic needs Stats--#
-Hunger = 100
-Thirst = 100
-Happiness = 100
+#--Inital Vars--#
+Hunger = random.randint(60,100) 
+Thirst =  random.randint(60,100) 
+Happiness = random.randint(60,100) 
+petName = 'unnamed'
+systemClear = 'undetermined'
 #----#
 
-petName = 'unnamed'
-systemClear = 'Undetermined'
-
+#--Checks System for clear function called later--#
 def systemCheck():
     global systemClear
 
@@ -23,7 +19,8 @@ def systemCheck():
         systemClear = 'clear'
         nameConf()
 
-
+#--Name configuration function--#
+#-Starts Threading for stat drain-#
 def nameConf():
     global petName
     petName = input('What is Your pets name?\n')
@@ -40,6 +37,7 @@ def nameConf():
     else:
         nameConf()
 
+#--Main Interaction with pet--#
 def mainPetFunc():
     global petName
 
@@ -52,9 +50,49 @@ def mainPetFunc():
     
     intrctOpt = input('What would you like to do?\n1) Feed\n 2) Water\n 3)Pet\n 4)Play\n')
     
+    if intrctOpt.lower() in ['feed','1']:
+        feedFunc()
+    
+    else:
+        print('Input valid interaction')
+        time.sleep(1)
+        mainPetFunc()
+#--Function that controls feeding--#
+def feedFunc():
+    global Hunger 
+    os.system(systemClear)
+    foodOpt = input('What would you like to feed your pet?\n 1) Cake\n 2) Burger and Fries\n 3) Chicken Alfredo\n 4) Salad\n')
+    foodOpt = foodOpt.lower()
 
+    if foodOpt in  ['1','cake']:
+        Hunger += random.randint(3,12)
+        print('fed cake')
+        time.sleep(5)
+        mainPetFunc()
+    
+    elif foodOpt in ['2','burger and fries','burger','fries']:
+        Hunger += random.randint(5,10)
+        print('fed burger')
+        time.sleep(5)
+        mainPetFunc()
+    elif foodOpt in ['3','chicken','alfredo','chicken Alfredo']:
+        Hunger += random.randint(10,15)
+        print('fed Chicken')
+        time.sleep(5)
+        mainPetFunc()
 
+    elif foodOpt in ['4','salad']:
+        Hunger += random.randint(1,5)
+        print('fed salad')
+        time.sleep(5)
+        mainPetFunc()
 
+    else:
+        os.system(systemClear)
+        print('Input a food choice!')
+        feedFunc()
+
+#--Threading function for stat drains--#
 def statDrain():
     global Hunger
     global Thirst
@@ -68,20 +106,20 @@ def statDrain():
         if randStat == 1:
             if Hunger > 0:
                 Hunger -= randAmt
-                print('drained Hunger')
+                #print('drained Hunger')
             else:
                 Hunger == 0
 
         if randStat == 2:
             if Thirst > 0:
                 Thirst -= randAmt
-                print('drained Thirst')                
+                #print('drained Thirst')                
             else:
                 Thirst == 0
         if randStat == 3:
             if Happiness > 0:
                 Happiness -= randAmt
-                print('Drained Happiness')
+                #print('drained Happiness')
             else:
                 Hunger == 0
         time.sleep(10)
